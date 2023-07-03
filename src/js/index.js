@@ -53,6 +53,7 @@ async function onSubmitSearchForm(e) {
 
   if (searchQuery === '') {
     Notiflix.Notify.failure(`Write something!`);
+    endText.style.display = 'none';
     return;
   }
 
@@ -61,8 +62,10 @@ async function onSubmitSearchForm(e) {
 
   if (response.totalHits > 40) {
     loadMoreBtn.style.display = 'block';
+    endText.style.display = 'none';
   } else {
     loadMoreBtn.style.display = 'none';
+    
   }
 
   try {
@@ -71,12 +74,14 @@ async function onSubmitSearchForm(e) {
       gallery.innerHTML = '';
       renderImageList (response.hits);
       gallerySimpleLightbox.refresh();
+      endText.style.display = 'none';
     }
 
     if (response.totalHits === 0) {
       gallery.innerHTML = '';
       Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       loadMoreBtn.style.display = 'none';
+      endText.style.display = 'none';
     }
   } catch (error) {
     console.log(error);
