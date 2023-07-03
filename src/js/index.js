@@ -48,11 +48,11 @@ searchForm.addEventListener('submit', onSubmitSearchForm);
 
 async function onSubmitSearchForm(e) {
   e.preventDefault();
-  searchQuery = e.currentTarget.searchQuery.value;
+  searchQuery = e.currentTarget.searchQuery.value.trim();
   pageNumber = 1;
 
   if (searchQuery === '') {
-    Notiflix.Notify.success(`Write something!`);
+    Notiflix.Notify.failure(`Write something!`);
     return;
   }
 
