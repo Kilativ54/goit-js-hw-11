@@ -13,6 +13,7 @@ let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 let pageNumber = 1;
 let currentHits = 0;
 let searchQuery = '';
+let perPage = 40;
 
 loadMoreBtn.style.display = 'none';
 endText.style.display = 'none';
@@ -91,14 +92,24 @@ async function onSubmitSearchForm(e) {
 loadMoreBtn.addEventListener('click', onClickLoadMoreBtn);
 
 async function onClickLoadMoreBtn() {
-  pageNumber ++;
-  const response = await fetchImages(searchQuery, pageNumber);
-  renderImageList(response.hits);
-  gallerySimpleLightbox.refresh();
-  currentHits += response.hits.length;
-
-  if (currentHits === response.totalHits) {
-    loadMoreBtn.style.display = 'none';
-    endText.style.display = 'block'
+  pageNumber +=1;
+  try{
+    
+    const response = await fetchImages(searchQuery, pageNumber);
+    let currentPage = Math.ceil(response.totalHits / perPage)
+    renderImageList(response.hits);
+    gallerySimpleLightbox.refresh();
+    currentHits += response.hits.length;
+    if (currentPage === pageNumber) {
+      loadMoreBtn.style.display = 'none';
+      endText.style.display = 'block'
   }
+  
+    if (currentHits === response.totalHits) {
+      loadMoreBtn.style.display = 'none';
+      endText.style.display = 'block'
+    }
+  }catch (err) { console.log }
+  
+
 }
